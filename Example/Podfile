@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'OSCGateway_Example' do
+  pod 'OSCGateway', :path => '../'
+
+  target 'OSCGateway_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
