@@ -1,6 +1,6 @@
 # OSCGateway
 
-[![CI Status](https://img.shields.io/travis/Akira Matsuda/OSCGateway.svg?style=flat)](https://travis-ci.org/Akira Matsuda/OSCGateway)
+<!-- [![CI Status](https://img.shields.io/travis/Akira Matsuda/OSCGateway.svg?style=flat)](https://travis-ci.org/Akira Matsuda/OSCGateway) -->
 [![Version](https://img.shields.io/cocoapods/v/OSCGateway.svg?style=flat)](https://cocoapods.org/pods/OSCGateway)
 [![License](https://img.shields.io/cocoapods/l/OSCGateway.svg?style=flat)](https://cocoapods.org/pods/OSCGateway)
 [![Platform](https://img.shields.io/cocoapods/p/OSCGateway.svg?style=flat)](https://cocoapods.org/pods/OSCGateway)
