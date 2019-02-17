@@ -1,0 +1,23 @@
+PODS:
+  - OSCGateway (0.1.0):
+    - SwiftOSC (~> 1.2)
+  - SwiftOSC (1.2.3)
+
+DEPENDENCIES:
+  - OSCGateway (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SwiftOSC
+
+EXTERNAL SOURCES:
+  OSCGateway:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  OSCGateway: aa7d8a9431a1132884e3b98cf2d49c983e98daba
+  SwiftOSC: 9eea2e703211f5f53fc0bc76b3d771485870e8c2
+
+PODFILE CHECKSUM: 767513559179fadc3963ae407a8ef451736f688a
+
+COCOAPODS: 1.5.3

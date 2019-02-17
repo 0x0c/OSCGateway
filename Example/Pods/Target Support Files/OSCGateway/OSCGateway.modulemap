@@ -1,0 +1,6 @@
+framework module OSCGateway {
+  umbrella header "OSCGateway-umbrella.h"
+
+  export *
+  module * { export * }
+}
