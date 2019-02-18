@@ -49,7 +49,7 @@ extension ViewController: UITextFieldDelegate {
                 if let port = Int(text) {
                     Gateway.shared.incomingPort = port
                 }
-            case "Outgoint Port":
+            case "Outgoing Port":
                 if let port = Int(text) {
                     Gateway.shared.incomingPort = port
                 }

@@ -35,23 +35,7 @@ struct StateData
     init(_ state: Int) {
         self.currentState = State(rawValue: state) ?? .invalid
     }
-    
-}
 
-struct StateMessage: Message {
-
-    typealias EndpointType = StateEndpoint
-    
-    private let state: State
-    
-    init(_ state: State) {
-        self.state = state
-    }
-    
-    func arguments() -> [OSCType] {
-        return [state.rawValue]
-    }
-    
 }
 
 struct StateEndpoint: ServerEndpoint {

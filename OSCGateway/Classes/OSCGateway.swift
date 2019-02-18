@@ -78,11 +78,11 @@ public final class Gateway {
         configureServer(port: incomingPort)
     }
     
-    public func configureClient(ipAddress: String, port: Int) {
+    func configureClient(ipAddress: String, port: Int) {
         client = OSCClient(address: ipAddress, port: port)
     }
     
-    public func configureServer(port: Int) {
+    func configureServer(port: Int) {
         server = OSCServer(address: "", port: port)
         server!.delegate = self
         server!.start()
@@ -97,6 +97,7 @@ public final class Gateway {
     }
     
     public func observe<T>(endpoint: T.Type, key: String, handler: @escaping Handler<T.Data?>) where T:ServerEndpoint {
+        remove(endpoint: T.self, forKey: key)
         let internalHandler: InternalHandler = { (message) in
             handler(T.parse(message: message))
         }

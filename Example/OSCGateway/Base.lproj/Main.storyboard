@@ -79,7 +79,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="7070" borderStyle="roundedRect" placeholder="Putgoing Port" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EsX-7Z-JE8">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="7070" borderStyle="roundedRect" placeholder="Outgoing Port" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EsX-7Z-JE8">
                                                 <rect key="frame" x="123.5" y="0.0" width="219.5" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="5oK-kH-aC2"/>
@@ -87,6 +87,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="exr-sS-59h"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                     </stackView>
