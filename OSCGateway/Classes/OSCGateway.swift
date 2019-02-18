@@ -9,20 +9,57 @@
 import Foundation
 import SwiftOSC
 
-class Gateway {
+public final class Gateway {
     
-    static let shared = Gateway()
+    public static let shared = Gateway()
     
-    private var client: OSCClient?
-    private var server: OSCServer?
+    var client: OSCClient?
+    var server: OSCServer?
+    var observers: EndpointObserver<[String : InternalHandler]>
     
+    typealias InternalHandler = (OSCMessage) -> Void
+    public typealias Handler<T> = (T) -> Void
     
-    typealias Handler = (OSCMessage) -> Void
+    public var address: String {
+        get {
+            guard let c = client else {
+                return ""
+            }
+            return c.address
+        }
+        set {
+            configureClient(ipAddress: newValue, port: outgoingPort)
+        }
+    }
     
-    private var observers: EndpointObserver<[String : Handler]>
+    public var incomingPort: Int {
+        get {
+            guard let s = server else {
+                return 0
+            }
+            return s.port
+        }
+        
+        set {
+            configureServer(port: newValue)
+        }
+    }
+    
+    public var outgoingPort: Int {
+        get {
+            guard let c = client else {
+                return 0
+            }
+            return c.port
+        }
+        
+        set {
+            configureClient(ipAddress: address, port: newValue)
+        }
+    }
     
     init() {
-        self.observers = EndpointObserver<[String : Handler]>()
+        self.observers = EndpointObserver<[String : InternalHandler]>()
     }
     
     convenience init(address: String, outgoingPort: Int) {
@@ -41,17 +78,17 @@ class Gateway {
         configureServer(port: incomingPort)
     }
     
-    func configureClient(ipAddress: String, port: Int) {
+    public func configureClient(ipAddress: String, port: Int) {
         client = OSCClient(address: ipAddress, port: port)
     }
     
-    func configureServer(port: Int) {
+    public func configureServer(port: Int) {
         server = OSCServer(address: "", port: port)
-        self.server!.delegate = self
-        self.server!.start()
+        server!.delegate = self
+        server!.start()
     }
     
-    func send<T>(message: T) where T:Message {
+    public func send<T>(message: T) where T:Message {
         guard let client = client else {
             return
         }
@@ -59,11 +96,15 @@ class Gateway {
                                message.arguments()))
     }
     
-    func observe<T>(endpoint: T.Type, key: String, handler: @escaping Handler) where T:Endpoint {
-        observers.append(handler: [key : handler], key: endpoint)
+    public func observe<T>(endpoint: T.Type, key: String, handler: @escaping Handler<T.Data?>) where T:ServerEndpoint {
+        let internalHandler: InternalHandler = { (message) in
+            handler(T.parse(message: message))
+        }
+        let pair = [key : internalHandler]
+        observers.append(handler: pair, key: T.self)
     }
     
-    func remove<T>(endpoint: T.Type, forKey: String) where T:Endpoint {
+    public func remove<T>(endpoint: T.Type, forKey: String) where T:ServerEndpoint {
         var handlers = observers[endpoint]
         handlers.removeAll { (dict) -> Bool in
             for key in dict.keys {
@@ -71,7 +112,7 @@ class Gateway {
                     return true
                 }
             }
-            
+
             return false
         }
     }
@@ -80,11 +121,11 @@ class Gateway {
 
 extension Gateway: OSCServerDelegate {
     
-    func didReceive(_ message: OSCMessage){
+    public func didReceive(_ message: OSCMessage){
         guard let (_, handlers) = observers.endpoint(forKey: message.address.string) else {
             return
         }
-        
+
         for h in handlers {
             for (_, f) in h {
                 f(message)
@@ -94,24 +135,39 @@ extension Gateway: OSCServerDelegate {
     
 }
 
-protocol Endpoint {
+public protocol Endpoint {
     
     static func address() -> String
     func address() -> String
     
 }
 
-protocol ServerEndpoint: Endpoint {
+public protocol ServerEndpoint: Endpoint {
     
     associatedtype Data
     static func parse(message: OSCMessage) -> Data?
     
 }
 
-extension Endpoint {
+public extension Endpoint {
     
     func address() -> String {
         return Self.address()
+    }
+    
+}
+
+public protocol Message {
+    
+    associatedtype EndpointType: Endpoint
+    func arguments() -> [OSCType]
+    
+}
+
+public extension Message {
+    
+    func address() -> String {
+        return EndpointType.address()
     }
     
 }
@@ -126,6 +182,10 @@ struct EndpointKey: Equatable, Hashable {
     
     static func == (lhs: EndpointKey, rhs: EndpointKey) -> Bool {
         return lhs.endpoint.address() == rhs.endpoint.address()
+    }
+    
+    func string() -> String {
+        return endpoint.address()
     }
     
 }
@@ -160,21 +220,6 @@ class EndpointObserver<T> {
         set {
             storage[EndpointKey(endpoint: key)] = newValue
         }
-    }
-    
-}
-
-protocol Message {
-    
-    associatedtype EndpointType: Endpoint
-    func arguments() -> [OSCType]
-    
-}
-
-extension Message {
-    
-    func address() -> String {
-        return EndpointType.address()
     }
     
 }
