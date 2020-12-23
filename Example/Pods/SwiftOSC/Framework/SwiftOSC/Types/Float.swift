@@ -10,18 +10,16 @@ import Foundation
 
 extension Float: OSCType {
     public var tag: String {
-        get {
-            return "f"
-        }
+        return "f"
     }
+
     public var data: Data {
-        get {
-            var float = CFConvertFloat32HostToSwapped(Float32(self))
-            let buffer = UnsafeBufferPointer(start: &float, count: 1)
-            return Data(buffer: buffer)
-        }
+        var float = CFConvertFloat32HostToSwapped(Float32(self))
+        let buffer = UnsafeBufferPointer(start: &float, count: 1)
+        return Data(buffer: buffer)
     }
-    init(_ data:Data){
+
+    init(_ data: Data) {
         var float = CFConvertFloat32HostToSwapped(Float())
         let buffer = UnsafeMutableBufferPointer(start: &float, count: 1)
         _ = data.copyBytes(to: buffer)
@@ -29,18 +27,15 @@ extension Float: OSCType {
     }
 }
 
-//convert double to float for ease of access
+// convert double to float for ease of access
 extension Double: OSCType {
     public var tag: String {
-        get {
-            return "f"
-        }
+        return "f"
     }
+
     public var data: Data {
-        get {
-            var float = CFConvertFloat32HostToSwapped(Float32(self))
-            let buffer = UnsafeBufferPointer(start: &float, count: 1)
-            return Data(buffer: buffer)
-        }
+        var float = CFConvertFloat32HostToSwapped(Float32(self))
+        let buffer = UnsafeBufferPointer(start: &float, count: 1)
+        return Data(buffer: buffer)
     }
 }

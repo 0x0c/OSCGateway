@@ -10,17 +10,15 @@ import Foundation
 
 extension Bool: OSCType {
     public var tag: String {
-        get {
-            if self == true {
-                return "T"
-            } else {
-                return "F"
-            }
+        if self == true {
+            return "T"
+        }
+        else {
+            return "F"
         }
     }
+
     public var data: Data {
-        get {
-            return Data()
-        }
+        return Data()
     }
 }

@@ -1,7 +1,7 @@
 PODS:
   - OSCGateway (1.0.1):
-    - SwiftOSC (~> 1.2)
-  - SwiftOSC (1.2.3)
+    - SwiftOSC (~> 1.3.1)
+  - SwiftOSC (1.3.1)
 
 DEPENDENCIES:
   - OSCGateway (from `../`)
@@ -15,9 +15,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  OSCGateway: 7879036eea4e5579a40eae52febdf66e288df4c0
-  SwiftOSC: 9eea2e703211f5f53fc0bc76b3d771485870e8c2
+  OSCGateway: 4aab4a80b47828550083c6d880324b6b65102620
+  SwiftOSC: 4e22674bbd1139daf659024ab39636b8952b69f1
 
 PODFILE CHECKSUM: 767513559179fadc3963ae407a8ef451736f688a
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.6.2

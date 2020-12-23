@@ -12,29 +12,27 @@ public typealias Blob = Data
 
 extension Blob: OSCType {
     public var tag: String {
-        get {
-            return "b"
-        }
+        return "b"
     }
-    public var data: Data {
-        get {
-            let length = UInt32(self.count)
-            var data = Data()
 
-            data.append(length.toData())
-            
-            data.append(self)
-            
-            //base 32
-            while data.count % 4 != 0 {
-                var null = UInt8(0)
-                data.append(&null, count: 1)
-            }
-            
-            return data
+    public var data: Data {
+        let length = UInt32(count)
+        var data = Data()
+
+        data.append(length.toData())
+
+        data.append(self)
+
+        // base 32
+        while data.count % 4 != 0 {
+            var null = UInt8(0)
+            data.append(&null, count: 1)
         }
+
+        return data
     }
-    init(_ data: Data){
+
+    init(_ data: Data) {
         self = data
     }
 }

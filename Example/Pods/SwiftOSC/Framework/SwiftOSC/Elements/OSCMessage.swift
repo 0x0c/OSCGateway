@@ -1,43 +1,43 @@
 import Foundation
 
 public class OSCMessage: OSCElement, CustomStringConvertible {
-    //MARK: Properties
+    // MARK: Properties
+
     public var address: OSCAddressPattern
-    public var arguments:[OSCType?] = []
+    public var arguments: [OSCType?] = []
     public var data: Data {
-        get {
-            var data = Data()
-            
-            //add address
-            data.append(self.address.string.toDataBase32())
-            
-            //create type list
-            var types = ","
-            for argument in self.arguments {
-                if let argument = argument {
-                    types += argument.tag
-                } else {
-                    //add null tag if nil argument
-                    types += "N"
-                }
+        var data = Data()
+
+        // add address
+        data.append(address.string.toDataBase32())
+
+        // create type list
+        var types = ","
+        for argument in arguments {
+            if let argument = argument {
+                types += argument.tag
             }
-            data.append(types.toDataBase32())
-            
-            //get arguments data
-            for argument in arguments {
-                if let argument = argument {
-                    data.append(argument.data)
-                }
+            else {
+                // add null tag if nil argument
+                types += "N"
             }
-            
-            return data
         }
+        data.append(types.toDataBase32())
+
+        // get arguments data
+        for argument in arguments {
+            if let argument = argument {
+                data.append(argument.data)
+            }
+        }
+
+        return data
     }
+
     public var description: String {
-        var description = "OSCMessage [Address<\(self.address.string)>"
-        
-        for argument in self.arguments {
-            
+        var description = "OSCMessage [Address<\(address.string)>"
+
+        for argument in arguments {
             if let int = argument as? Int {
                 description += " Int<\(int)>"
             }
@@ -51,7 +51,7 @@ public class OSCMessage: OSCElement, CustomStringConvertible {
                 description += " String<\(string)>"
             }
             if let blob = argument as? Blob {
-                description += " Blob\(blob)"
+                description += " Blob<\(blob)>"
             }
             if let bool = argument as? Bool {
                 description += " <\(bool)>"
@@ -66,36 +66,38 @@ public class OSCMessage: OSCElement, CustomStringConvertible {
                 description += " Timetag<\(timetag)>"
             }
         }
-        
+
         description += "]"
         return description
     }
-    
-    //MARK: Initializers
-    public init(_ address: OSCAddressPattern){
+
+    // MARK: Initializers
+
+    public init(_ address: OSCAddressPattern) {
         self.address = address
     }
-    
-    public init(_ address: OSCAddressPattern,_ arguments:OSCType?...){
-        self.address = address
-        self.arguments = arguments
-    }
-    
-    public init(_ address: OSCAddressPattern,_ arguments:[OSCType?]){
+
+    public init(_ address: OSCAddressPattern, _ arguments: OSCType?...) {
         self.address = address
         self.arguments = arguments
     }
-    
-    //MARK: Methods
-    public func add(){
-        self.arguments.append(nil)
+
+    public init(_ address: OSCAddressPattern, _ arguments: [OSCType?]) {
+        self.address = address
+        self.arguments = arguments
     }
-    
-    public func add(_ arguments: OSCType?...){
+
+    // MARK: Methods
+
+    public func add() {
+        arguments.append(nil)
+    }
+
+    public func add(_ arguments: OSCType?...) {
         self.arguments += arguments
     }
-    
-    public func add(_ arguments: [OSCType?]){
+
+    public func add(_ arguments: [OSCType?]) {
         self.arguments += arguments
     }
 }

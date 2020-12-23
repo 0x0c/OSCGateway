@@ -9,21 +9,16 @@
 import Foundation
 
 public struct Impulse {
-    public init(){
-        
-    }
+    public init() {}
 }
 
 extension Impulse: OSCType {
     public var tag: String {
-        get {
-            return "I"
-        }
+        return "I"
     }
+
     public var data: Data {
-        get {
-            return Data()
-        }
+        return Data()
     }
 }
 
