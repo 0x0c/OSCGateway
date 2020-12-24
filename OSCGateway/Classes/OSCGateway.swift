@@ -163,9 +163,9 @@ public extension Message {
 
 struct EndpointKey: Equatable, Hashable {
     let endpoint: Endpoint.Type
-
-    var hashValue: Int {
-        return endpoint.address().hashValue
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(endpoint.address())
     }
 
     static func == (lhs: EndpointKey, rhs: EndpointKey) -> Bool {
